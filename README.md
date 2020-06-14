@@ -1,8 +1,8 @@
 # London-API
 
-An API based on `Test`
+An API based on `blablablah`
 
 ## Test
 
 To install, simply run
-`j`
+`TBC`
