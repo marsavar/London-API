@@ -1,8 +1,10 @@
 package LondonAPI.London.UserClass;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonInclude(JsonInclude.Include.NON_NULL) // this is to avoid empty params such as 'city' when calling "/users"
 public class User {
 
     @JsonProperty("id")
@@ -44,6 +46,7 @@ public class User {
         this.longitude = longitude;
         this.city = city;
     }
+
 
     public long getId() {
         return id;
