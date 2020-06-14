@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -20,26 +21,31 @@ public class LondonOrFiftyMiles {
 
     @GetMapping("/LondonOrFiftyMiles")
     @ResponseBody
-    public List<User> londonOrFiftyMiles() {
+    public List<User> londonOrFiftyMiles() throws IOException {
 
-        RestTemplate restTemplate = new RestTemplate();
+        try {
+            RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<List<User>> allUsers = restTemplate.exchange(URLs.getALL_USERS(), HttpMethod.GET, null,
-                new ParameterizedTypeReference<>() {});
+            ResponseEntity<List<User>> allUsers = restTemplate.exchange(URLs.getALL_USERS(), HttpMethod.GET, null,
+                    new ParameterizedTypeReference<>() {
+                    });
 
-        ResponseEntity<List<User>> residentInLondon = restTemplate.exchange(URLs.getLONDON(), HttpMethod.GET,
-                null, new ParameterizedTypeReference<>() {});
-        List<User> Londoners = residentInLondon.getBody();
+            ResponseEntity<List<User>> residentInLondon = restTemplate.exchange(URLs.getLONDON(), HttpMethod.GET,
+                    null, new ParameterizedTypeReference<>() {
+                    });
+            List<User> Londoners = residentInLondon.getBody();
 
-        Set<User> withinFiftyMilesSet = Objects.requireNonNull(allUsers.getBody())
-                .stream()
-                .filter(lambda -> DistanceFromLondon.distance(lambda.getLatitude(), lambda.getLongitude()) <= 50)
-                .collect(Collectors.toCollection(LinkedHashSet::new));
+            Set<User> withinFiftyMilesSet = Objects.requireNonNull(allUsers.getBody())
+                    .stream()
+                    .filter(lambda -> DistanceFromLondon.distance(lambda.getLatitude(), lambda.getLongitude()) <= 50)
+                    .collect(Collectors.toCollection(LinkedHashSet::new));
 
-        withinFiftyMilesSet.addAll(Objects.requireNonNull(Londoners));
+            withinFiftyMilesSet.addAll(Objects.requireNonNull(Londoners));
 
-        return new ArrayList<>(withinFiftyMilesSet);
-
+            return new ArrayList<>(withinFiftyMilesSet);
+        } catch (Exception exception) {
+            throw new IOException();
+        }
     }
 
 }

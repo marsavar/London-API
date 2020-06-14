@@ -1,6 +1,7 @@
 package LondonAPI.London;
 
 import LondonAPI.London.GetResponses.London;
+import LondonAPI.London.URLs.URLs;
 import LondonAPI.London.UserClass.User;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -22,9 +23,10 @@ public class LondonTests {
 
 
     RestTemplate restTemplate = new RestTemplate();
+    String baseURL = URLs.getLOCAL();
 
     ResponseEntity<List<User>> response = restTemplate.exchange(
-            "http://localhost:8080/London",
+            baseURL+"/London",
             HttpMethod.GET,
             null,
             new ParameterizedTypeReference<>(){});

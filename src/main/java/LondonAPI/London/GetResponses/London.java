@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -20,14 +21,20 @@ public class London {
 
     @GetMapping("/London")
     @ResponseBody
-    public List<User> london() {
+    public List<User> london() throws IOException {
 
-        RestTemplate restTemplate = new RestTemplate();
+        try {
+            RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<List<User>> users = restTemplate.exchange(URLs.getLONDON(), HttpMethod.GET, null,
-                new ParameterizedTypeReference<>() {});
+            ResponseEntity<List<User>> users = restTemplate.exchange(URLs.getLONDON(), HttpMethod.GET, null,
+                    new ParameterizedTypeReference<>() {
+                    });
 
-        return users.getBody();
+            return users.getBody();
+
+        } catch (Exception exception) {
+            throw new IOException(exception);
+        }
 
     }
 
