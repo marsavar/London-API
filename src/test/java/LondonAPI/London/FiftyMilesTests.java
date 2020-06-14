@@ -1,6 +1,7 @@
 package LondonAPI.London;
 
-import LondonAPI.London.GetResponses.London;
+import LondonAPI.London.GetResponses.FiftyMiles;
+import LondonAPI.London.GetResponses.HelperFunctions.DistanceFromLondon;
 import LondonAPI.London.URLs.URLs;
 import LondonAPI.London.UserClass.User;
 import org.junit.jupiter.api.Test;
@@ -9,24 +10,27 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(classes = London.class)
-public class LondonTests {
+@SpringBootTest(classes = FiftyMiles.class)
+public class FiftyMilesTests {
+
 
 
     RestTemplate restTemplate = new RestTemplate();
     String baseURL = URLs.getLOCAL();
 
     ResponseEntity<List<User>> response = restTemplate.exchange(
-            baseURL+"/London",
+            baseURL+"/FiftyMiles",
             HttpMethod.GET,
             null,
             new ParameterizedTypeReference<>(){});
 
-    List<User> Londoners = response.getBody();
+    List<User> withinFiftyMiles = response.getBody();
 
     @Test
     public void testStatusCodeValueIs200() {
@@ -49,7 +53,7 @@ public class LondonTests {
     @Test
     public void testListNotEmpty() {
 
-        assertTrue(Londoners != null && Londoners.size() > 0);
+        assertTrue(withinFiftyMiles != null && withinFiftyMiles.size() > 0);
 
     }
 
@@ -58,32 +62,19 @@ public class LondonTests {
 
         // check that every member is correctly instantiated as a User object
 
-        assertEquals((int) Londoners.stream()
-                .filter(user -> user.getClass().equals(User.class)).count(), Londoners.size());
+        assertEquals((int) withinFiftyMiles.stream()
+                .filter(user -> user.getClass().equals(User.class)).count(), withinFiftyMiles.size());
 
     }
 
     @Test
-    public void testLondonUsers135()  {
+    public void testDistance()  {
 
-        // check that user Mechelle Boam is in the list
+        // check that every User is within 50 miles of London
 
-        User mechelle = Londoners.stream().filter(user -> user
-                .getFirst_name()
-                .toLowerCase()
-                .equals("mechelle"))
-                .findFirst()
-                .get();
-
-
-        assertEquals(mechelle.getId(),135);
-        assertEquals(mechelle.getFirst_name().toLowerCase(),"mechelle");
-        assertEquals(mechelle.getLast_name().toLowerCase(),"boam");
-        assertEquals(mechelle.getEmail().toLowerCase(),"mboam3q@thetimes.co.uk");
-        assertEquals(mechelle.getIp_address().toLowerCase(),"113.71.242.187");
-        assertEquals(mechelle.getLatitude(),-6.5115909);
-        assertEquals(mechelle.getLongitude(),105.652983);
-        assertNull(mechelle.getCity());
+        assertEquals((int) withinFiftyMiles.stream()
+        .filter(user -> DistanceFromLondon.distance(user.getLatitude(),user.getLongitude()) <= 50)
+        .count(), withinFiftyMiles.size());
 
 
     }

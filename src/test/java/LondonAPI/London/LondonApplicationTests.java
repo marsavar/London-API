@@ -12,11 +12,12 @@ public class LondonApplicationTests  {
 	private LondonApplication application;
 
 	@Test
-	public void contextLoads() {
+	public void start() {
 
 		//check that the application has started running successfully
 
 		assertThat(application).isNotNull();
+
 	}
 
 

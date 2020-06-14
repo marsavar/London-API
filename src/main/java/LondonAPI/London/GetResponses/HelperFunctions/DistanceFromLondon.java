@@ -1,4 +1,4 @@
-package LondonAPI.London.GetResponses.Helpers;
+package LondonAPI.London.GetResponses.HelperFunctions;
 
 public class DistanceFromLondon {
 

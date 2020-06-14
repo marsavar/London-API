@@ -1,5 +1,5 @@
 package LondonAPI.London.GetResponses;
-import LondonAPI.London.GetResponses.Helpers.DistanceFromLondon;
+import LondonAPI.London.GetResponses.HelperFunctions.DistanceFromLondon;
 import LondonAPI.London.URLs.URLs;
 import LondonAPI.London.UserClass.User;
 import org.springframework.core.ParameterizedTypeReference;

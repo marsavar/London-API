@@ -1,6 +1,7 @@
 package LondonAPI.London;
 
-import LondonAPI.London.GetResponses.London;
+import LondonAPI.London.GetResponses.HelperFunctions.DistanceFromLondon;
+import LondonAPI.London.GetResponses.LondonOrFiftyMiles;
 import LondonAPI.London.URLs.URLs;
 import LondonAPI.London.UserClass.User;
 import org.junit.jupiter.api.Test;
@@ -9,24 +10,26 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = London.class)
-public class LondonTests {
+@SpringBootTest(classes = LondonOrFiftyMiles.class)
+public class LondonOrFiftyMilesTests {
 
 
     RestTemplate restTemplate = new RestTemplate();
     String baseURL = URLs.getLOCAL();
 
     ResponseEntity<List<User>> response = restTemplate.exchange(
-            baseURL+"/London",
+            baseURL+"/LondonOrFiftyMiles",
             HttpMethod.GET,
             null,
             new ParameterizedTypeReference<>(){});
 
-    List<User> Londoners = response.getBody();
+    List<User> withinFiftyMilesOrResidents = response.getBody();
 
     @Test
     public void testStatusCodeValueIs200() {
@@ -49,7 +52,9 @@ public class LondonTests {
     @Test
     public void testListNotEmpty() {
 
-        assertTrue(Londoners != null && Londoners.size() > 0);
+        // check that the list is not empty
+
+        assertTrue(withinFiftyMilesOrResidents != null && withinFiftyMilesOrResidents.size() > 0);
 
     }
 
@@ -58,8 +63,29 @@ public class LondonTests {
 
         // check that every member is correctly instantiated as a User object
 
-        assertEquals((int) Londoners.stream()
-                .filter(user -> user.getClass().equals(User.class)).count(), Londoners.size());
+        assertEquals((int) withinFiftyMilesOrResidents.stream()
+                .filter(user -> user.getClass().equals(User.class)).count(), withinFiftyMilesOrResidents.size());
+
+    }
+
+    @Test
+    public void testDistanceOrResidence()  {
+
+        // check that every User is within 50 miles of London OR resident in London
+
+        ResponseEntity<List<User>> response = restTemplate.exchange(
+                baseURL+"/London",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<>(){});
+
+        List<User> Londoners = response.getBody();
+
+        assertEquals(Objects.requireNonNull(Londoners).size() + (int) withinFiftyMilesOrResidents.stream()
+                        .filter(user -> DistanceFromLondon.distance(user.getLatitude(), user.getLongitude()) <= 50)
+                        .count()
+                , withinFiftyMilesOrResidents.size());
+
 
     }
 
@@ -68,7 +94,7 @@ public class LondonTests {
 
         // check that user Mechelle Boam is in the list
 
-        User mechelle = Londoners.stream().filter(user -> user
+        User mechelle = withinFiftyMilesOrResidents.stream().filter(user -> user
                 .getFirst_name()
                 .toLowerCase()
                 .equals("mechelle"))
