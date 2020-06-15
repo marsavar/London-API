@@ -19,8 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(classes = FiftyMiles.class)
 public class FiftyMilesTests {
 
-
-
     RestTemplate restTemplate = new RestTemplate();
     String baseURL = URLs.getLOCAL();
 

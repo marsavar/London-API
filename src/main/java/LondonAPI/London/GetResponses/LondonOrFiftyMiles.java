@@ -26,23 +26,29 @@ public class LondonOrFiftyMiles {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
+            // get all users
             ResponseEntity<List<User>> allUsers = restTemplate.exchange(URLs.getALL_USERS(), HttpMethod.GET, null,
                     new ParameterizedTypeReference<>() {
                     });
 
+            // get all users listed as residing in London
             ResponseEntity<List<User>> residentInLondon = restTemplate.exchange(URLs.getLONDON(), HttpMethod.GET,
                     null, new ParameterizedTypeReference<>() {
                     });
             List<User> Londoners = residentInLondon.getBody();
 
+            // filter users whose coordinates are within 50 miles of London
             Set<User> withinFiftyMilesSet = Objects.requireNonNull(allUsers.getBody())
                     .stream()
                     .filter(lambda -> DistanceFromLondon.distance(lambda.getLatitude(), lambda.getLongitude()) <= 50)
                     .collect(Collectors.toCollection(LinkedHashSet::new));
 
+            // add users living in London to the set
             withinFiftyMilesSet.addAll(Objects.requireNonNull(Londoners));
 
+            // convert the set to a list
             return new ArrayList<>(withinFiftyMilesSet);
+
         } catch (Exception exception) {
             throw new IOException();
         }

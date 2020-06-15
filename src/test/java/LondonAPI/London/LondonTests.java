@@ -9,6 +9,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,6 +38,7 @@ public class LondonTests {
 
     }
 
+
     @Test
     public void testContentType() {
 
@@ -62,6 +64,8 @@ public class LondonTests {
                 .filter(user -> user.getClass().equals(User.class)).count(), Londoners.size());
 
     }
+
+
 
     @Test
     public void testLondonUsers135()  {

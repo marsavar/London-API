@@ -2,7 +2,8 @@
 
 An API, built with Maven and Spring Boot, that calls https://bpdts-test-app.herokuapp.com/ and returns people who are listed as either living in London, or whose current coordinates are within 50 miles of London.
 
-
+Requires Java 14.
+  
 ## Requests
 
 The API supports the following requests:
@@ -24,5 +25,10 @@ The service will then run on your machine at `http://localhost:8000`, and `GET` 
 - http://localhost:8080/FiftyMiles
 - http://localhost:8080/LondonOrFiftyMiles
 
+## Testing
+
+While the application is running, tests can be run with the following command line:
+
+`./mvnw test`
 
 
