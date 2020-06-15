@@ -20,9 +20,9 @@ After downloading the files, the application can be run from the command line wi
 
 The service will then run on your machine at `http://localhost:8000`, and `GET` requests wil be  accessible from the following URLs:
 
-- //localhost:8000/London
-- //localhost:8000/FiftyMiles
-- //localhost:8000/LondonOrFiftyMiles
+- `localhost:8000/London`
+- `localhost:8000/FiftyMiles`
+- `localhost:8000/LondonOrFiftyMiles`
 
 
 
