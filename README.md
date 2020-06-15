@@ -2,7 +2,7 @@
 
 An API, built with Maven and Spring Boot, that calls https://bpdts-test-app.herokuapp.com/ and returns people who are listed as either living in London, or whose current coordinates are within 50 miles of London.
 
-Requires Java 14.
+:exclamation: Requires Java 14.
   
 ## Requests
 
