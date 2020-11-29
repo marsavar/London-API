@@ -31,6 +31,8 @@ The service will then run on your machine at `http://localhost:8000`, and `GET` 
 
 While the application is running, tests can be run with the following command line:
 
-`./mvnw test`
+```bash
+./mvnw test
+```
 
 
