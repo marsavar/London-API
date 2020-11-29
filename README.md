@@ -17,7 +17,9 @@ Request | Path | Returns
 ## Running the application
 After downloading the files, the application can be run from the command line with Maven as follows:
 
-`./mvnw spring-boot:run`
+```bash
+./mvnw spring-boot:run
+```
 
 The service will then run on your machine at `http://localhost:8000`, and `GET` requests wil be  accessible from the following URLs:
 
